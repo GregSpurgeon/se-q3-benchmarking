@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 Command line utility that accepts a word file and prints a dictionary of
@@ -10,9 +10,10 @@ for an arbitrary list of strings.
 
 # Your name here, and any other people/sources who helped.
 # Give credit where credit is due.
-__author__ = "???"
+__author__ = """Greg Spurgeon"""
 
 import sys
+import cProfile
 
 
 def alphabetize(string):
@@ -27,11 +28,13 @@ def find_anagrams(words):
     Example:
     {'dgo': ['dog'], 'act': ['cat', 'act']}
     """
-    anagrams = {
-        alphabetize(word): [
-            w for w in words
-            if alphabetize(w) == alphabetize(word)]
-        for word in words}
+    anagrams = {}
+    for word in words:
+        alpha = alphabetize(word)
+        if alpha not in anagrams:
+            anagrams[alpha] = [word]
+        else:
+            anagrams[alpha].append(word)
     return anagrams
 
 
@@ -50,3 +53,4 @@ def main(args):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
+    cProfile.run("main(sys.argv[1:])")
